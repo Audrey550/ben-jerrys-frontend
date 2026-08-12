@@ -1,9 +1,28 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { createScene } from './three/scene'
 
 const selectedFlavour = ref('vanilla')
 const selectedTopping = ref('rainbow')
+
+const flavourPrices = {
+    vanilla: 3.50,
+    chocolate: 4.00,
+    strawberry: 3.75
+}
+
+const toppingPrices = {
+    rainbow: 0.50,
+    chocolate: 0.75,
+    blue: 0.50
+}
+
+const totalPrice = computed(() => {
+    return (
+        flavourPrices[selectedFlavour.value] +
+        toppingPrices[selectedTopping.value]
+    )
+})
 
 let iceCreamScene = null
 
@@ -91,7 +110,13 @@ watch(selectedTopping, (newTopping) => {
                 </button>
 
             </div>
-
         </section>
+        <div class="price">
+          <h2>Your ice cream</h2>
+          <p>
+              Total:
+              <strong>€{{ totalPrice.toFixed(2) }}</strong>
+          </p>
+      </div>
     </main>
 </template>
