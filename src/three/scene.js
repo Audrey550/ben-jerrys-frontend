@@ -78,6 +78,9 @@ export function createScene(container) {
     let iceCreamScoop
     let sprinkles
 
+    let targetScoopColor = new THREE.Color(0xfff1c7)
+    let targetSprinklesColor = new THREE.Color(0xffffff)
+
 
     loader.load(
         '/models/ice-cream.glb',
@@ -123,10 +126,6 @@ export function createScene(container) {
 
     function setFlavour(flavour) {
 
-        if (!iceCreamScoop) {
-            return
-        }
-
         const flavourColors = {
             vanilla: 0xfff1c7,
             chocolate: 0x6b3e26,
@@ -136,16 +135,12 @@ export function createScene(container) {
         const color = flavourColors[flavour]
 
         if (color) {
-            iceCreamScoop.material.color.set(color)
+            targetScoopColor.set(color)
         }
     }
 
 
     function setTopping(topping) {
-
-        if (!sprinkles) {
-            return
-        }
 
         const toppingColors = {
             rainbow: 0xffffff,
@@ -156,7 +151,7 @@ export function createScene(container) {
         const color = toppingColors[topping]
 
         if (color) {
-            sprinkles.material.color.set(color)
+            targetSprinklesColor.set(color)
         }
     }
 
@@ -231,6 +226,24 @@ export function createScene(container) {
             clock.getElapsedTime()
 
         if (iceCream) {
+
+            // --------------------------------
+            // Smooth colour transitions
+            // --------------------------------
+
+            if (iceCreamScoop) {
+                iceCreamScoop.material.color.lerp(
+                    targetScoopColor,
+                    0.08
+                )
+            }
+
+            if (sprinkles) {
+                sprinkles.material.color.lerp(
+                    targetSprinklesColor,
+                    0.08
+                )
+            }           
 
             // --------------------------------
             // Rotation
