@@ -75,12 +75,29 @@ export function createScene(container) {
     const loader = new GLTFLoader()
 
     let iceCream
+    let iceCreamScoop
+    let sprinkles
+
 
     loader.load(
         '/models/ice-cream.glb',
 
         (gltf) => {
             iceCream = gltf.scene
+
+            iceCream.traverse((child) => {
+
+                if (child.isMesh) {
+
+                    if (child.name === 'IceCream_3_3') {
+                        iceCreamScoop = child
+                    }
+
+                    if (child.name === 'IceCream_3_2') {
+                        sprinkles = child
+                    }
+                }
+            })
 
             iceCream.scale.set(2, 2, 2)
 
@@ -101,6 +118,50 @@ export function createScene(container) {
 
 
     // --------------------------------
+    // Customization
+    // --------------------------------
+
+    function setFlavour(flavour) {
+
+        if (!iceCreamScoop) {
+            return
+        }
+
+        const flavourColors = {
+            vanilla: 0xfff1c7,
+            chocolate: 0x6b3e26,
+            strawberry: 0xf58fa8
+        }
+
+        const color = flavourColors[flavour]
+
+        if (color) {
+            iceCreamScoop.material.color.set(color)
+        }
+    }
+
+
+    function setTopping(topping) {
+
+        if (!sprinkles) {
+            return
+        }
+
+        const toppingColors = {
+            rainbow: 0xffffff,
+            chocolate: 0x5a321f,
+            blue: 0x4da6ff
+        }
+
+        const color = toppingColors[topping]
+
+        if (color) {
+            sprinkles.material.color.set(color)
+        }
+    }
+
+
+    // --------------------------------
     // Hover interaction
     // --------------------------------
 
@@ -113,7 +174,9 @@ export function createScene(container) {
     let targetRotationZ = 0
 
     container.addEventListener('pointermove', (event) => {
-        const rect = renderer.domElement.getBoundingClientRect()
+
+        const rect =
+            renderer.domElement.getBoundingClientRect()
 
         mouse.x =
             ((event.clientX - rect.left) / rect.width) * 2 - 1
@@ -124,22 +187,29 @@ export function createScene(container) {
         raycaster.setFromCamera(mouse, camera)
 
         if (iceCream) {
-            const intersects = raycaster.intersectObject(
-                iceCream,
-                true
-            )
+
+            const intersects =
+                raycaster.intersectObject(
+                    iceCream,
+                    true
+                )
 
             isHovering = intersects.length > 0
 
             if (isHovering) {
-                // Mouse position determines the tilt
-                targetRotationX = mouse.y * 0.15
-                targetRotationZ = -mouse.x * 0.15
+
+                targetRotationX =
+                    mouse.y * 0.15
+
+                targetRotationZ =
+                    -mouse.x * 0.15
             }
         }
     })
 
+
     container.addEventListener('pointerleave', () => {
+
         isHovering = false
 
         targetRotationX = 0
@@ -154,9 +224,11 @@ export function createScene(container) {
     const clock = new THREE.Clock()
 
     function animate() {
+
         requestAnimationFrame(animate)
 
-        const elapsedTime = clock.getElapsedTime()
+        const elapsedTime =
+            clock.getElapsedTime()
 
         if (iceCream) {
 
@@ -175,9 +247,12 @@ export function createScene(container) {
                 Math.sin(elapsedTime * 2) * 0.08
 
 
+            // --------------------------------
             // Hover scale
+            // --------------------------------
 
-            const targetScale = isHovering ? 2.15 : 2
+            const targetScale =
+                isHovering ? 2.15 : 2
 
             iceCream.scale.x +=
                 (targetScale - iceCream.scale.x) * 0.1
@@ -189,13 +264,17 @@ export function createScene(container) {
                 (targetScale - iceCream.scale.z) * 0.1
 
 
+            // --------------------------------
             // Hover tilt
+            // --------------------------------
 
             iceCream.rotation.x +=
-                (targetRotationX - iceCream.rotation.x) * 0.08
+                (targetRotationX -
+                    iceCream.rotation.x) * 0.08
 
             iceCream.rotation.z +=
-                (targetRotationZ - iceCream.rotation.z) * 0.08
+                (targetRotationZ -
+                    iceCream.rotation.z) * 0.08
         }
 
         renderer.render(scene, camera)
@@ -203,16 +282,28 @@ export function createScene(container) {
 
     animate()
 
+
+    // --------------------------------
     // Responsive resizing
+    // --------------------------------
 
     function handleResize() {
-        const width = container.clientWidth
-        const height = container.clientHeight
 
-        camera.aspect = width / height
+        const width =
+            container.clientWidth
+
+        const height =
+            container.clientHeight
+
+        camera.aspect =
+            width / height
+
         camera.updateProjectionMatrix()
 
-        renderer.setSize(width, height)
+        renderer.setSize(
+            width,
+            height
+        )
 
         renderer.setPixelRatio(
             Math.min(window.devicePixelRatio, 2)
@@ -223,4 +314,14 @@ export function createScene(container) {
         'resize',
         handleResize
     )
+
+
+    // --------------------------------
+    // Return customization controls
+    // --------------------------------
+
+    return {
+        setFlavour,
+        setTopping
+    }
 }
