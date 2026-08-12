@@ -5,6 +5,9 @@ import { createScene } from './three/scene'
 const selectedFlavour = ref('vanilla')
 const selectedTopping = ref('rainbow')
 
+const customerName = ref('')
+const customerAddress = ref('')
+
 const flavourPrices = {
     vanilla: 3.50,
     chocolate: 4.00,
@@ -23,6 +26,26 @@ const totalPrice = computed(() => {
         toppingPrices[selectedTopping.value]
     )
 })
+
+function createOrder() {
+    const order = {
+        customer: {
+            name: customerName.value,
+            address: customerAddress.value
+        },
+
+        iceCream: {
+            flavour: selectedFlavour.value,
+            topping: selectedTopping.value
+        },
+
+        totalPrice: totalPrice.value,
+
+        status: 'to-process'
+    }
+
+    console.log('Order:', order)
+}
 
 let iceCreamScene = null
 
@@ -111,12 +134,61 @@ watch(selectedTopping, (newTopping) => {
 
             </div>
         </section>
-        <div class="price">
-          <h2>Your ice cream</h2>
-          <p>
-              Total:
+
+      <section class="order-summary">
+
+          <h2>Your ice cream 🍦</h2>
+
+          <div class="summary-item">
+              <span>Flavour</span>
+              <strong>{{ selectedFlavour }}</strong>
+          </div>
+
+          <div class="summary-item">
+              <span>Topping</span>
+              <strong>{{ selectedTopping }}</strong>
+          </div>
+
+          <div class="summary-total">
+              <span>Total</span>
               <strong>€{{ totalPrice.toFixed(2) }}</strong>
-          </p>
-      </div>
+          </div>
+
+          <button class="order-button">
+              Order ice cream
+          </button>
+      </section>
+
+      <section class="customer-form">
+            <h2>Your details</h2>
+
+            <label for="customer-name">
+                Name
+            </label>
+
+            <input
+                id="customer-name"
+                v-model="customerName"
+                type="text"
+                placeholder="Your name"
+            >
+
+            <label for="customer-address">
+                Address
+            </label>
+
+            <input
+                id="customer-address"
+                v-model="customerAddress"
+                type="text"
+                placeholder="Your address"
+            >
+
+          <button class="place-order-button"
+              @click="createOrder"
+          >
+              Place order
+          </button>
+      </section>
     </main>
 </template>

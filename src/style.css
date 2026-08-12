@@ -16,3 +16,77 @@ main {
     width: 100%;
     height: 500px;
 }
+
+.order-summary {
+    width: min(90%, 400px);
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 20px;
+    background: white;
+    box-sizing: border-box;
+}
+
+.order-summary h2 {
+    margin-top: 0;
+}
+
+.summary-item,
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0;
+}
+
+.summary-total {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #eee;
+    font-size: 1.2rem;
+}
+
+.order-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.customer-form {
+    width: min(90%, 400px);
+    margin: 20px auto 40px;
+    padding: 25px;
+    border-radius: 20px;
+    background: white;
+    box-sizing: border-box;
+}
+
+.customer-form h2 {
+    margin-top: 0;
+}
+
+.customer-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.customer-form input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.place-order-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+}

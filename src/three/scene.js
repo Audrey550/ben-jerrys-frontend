@@ -7,7 +7,7 @@ export function createScene(container) {
     // --------------------------------
 
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0xf7e9d8)
+    scene.background = new THREE.Color(0xdcd0ee)
 
 
     // --------------------------------
