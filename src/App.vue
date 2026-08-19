@@ -27,7 +27,7 @@ const totalPrice = computed(() => {
     )
 })
 
-function createOrder() {
+async function createOrder() {
     const order = {
         customer: {
             name: customerName.value,
@@ -44,7 +44,17 @@ function createOrder() {
         status: 'to-process'
     }
 
-    console.log('Order:', order)
+    const response = await fetch('http://localhost:3000/api/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+    })
+
+    const data = await response.json()
+
+    console.log('Order:', data)
 }
 
 let iceCreamScene = null
