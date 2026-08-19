@@ -35,13 +35,11 @@ async function createOrder() {
         },
 
         iceCream: {
-            flavour: selectedFlavour.value,
+            flavor: selectedFlavour.value,
             topping: selectedTopping.value
         },
 
         totalPrice: totalPrice.value,
-
-        status: 'to-process'
     }
 
     const response = await fetch('http://localhost:3000/api/orders', {
