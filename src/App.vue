@@ -45,9 +45,10 @@ const totalPrice = computed(() => {
 })
 
 async function createOrder() {
-     if (!customerName.value.trim() || !customerAddress.value.trim()) {
+    if (!customerName.value.trim() || !customerAddress.value.trim()) {
         return
     }
+
     orderSuccess.value = false
 
     const order = {
@@ -88,6 +89,13 @@ function handleLogout() {
     isAdmin.value = false
 }
 
+function finishCustomization() {
+    document.querySelector('.order-summary')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    })
+}
+
 let iceCreamScene = null
 
 onMounted(() => {
@@ -125,96 +133,115 @@ watch(selectedTopping, (newTopping) => {
 
     <main v-else>
         <h1>Ben & Jerry's Custom Ice Cream</h1>
+
         <button @click="showLogin = true">
             Admin
         </button>
 
-        <div id="three-container"></div>
+        <div class="customization-area">
 
-        <section class="customizer">
+            <div id="three-container"></div>
 
-            <h2>Choose your flavour</h2>
+            <section class="customizer">
 
-            <div class="options">
+                <h2>Choose your flavour</h2>
+
+                <div class="options">
+
+                    <button
+                        @click="selectedFlavour = 'vanilla'"
+                        :class="{ active: selectedFlavour === 'vanilla' }"
+                    >
+                        🍦 Vanilla
+                    </button>
+
+                    <button
+                        @click="selectedFlavour = 'chocolate'"
+                        :class="{ active: selectedFlavour === 'chocolate' }"
+                    >
+                        🍫 Chocolate
+                    </button>
+
+                    <button
+                        @click="selectedFlavour = 'strawberry'"
+                        :class="{ active: selectedFlavour === 'strawberry' }"
+                    >
+                        🍓 Strawberry
+                    </button>
+
+                </div>
+
+                <h2>Choose your topping</h2>
+
+                <div class="options">
+
+                    <button
+                        @click="selectedTopping = 'rainbow'"
+                        :class="{ active: selectedTopping === 'rainbow' }"
+                    >
+                        🌈 Rainbow
+                    </button>
+
+                    <button
+                        @click="selectedTopping = 'chocolate'"
+                        :class="{ active: selectedTopping === 'chocolate' }"
+                    >
+                        🍫 Chocolate
+                    </button>
+
+                    <button
+                        @click="selectedTopping = 'blue'"
+                        :class="{ active: selectedTopping === 'blue' }"
+                    >
+                        💙 Blue
+                    </button>
+
+                </div>
 
                 <button
-                    @click="selectedFlavour = 'vanilla'"
-                    :class="{ active: selectedFlavour === 'vanilla' }"
+                    class="done-button"
+                    @click="finishCustomization"
                 >
-                    🍦 Vanilla
+                    Done ✓
                 </button>
 
-                <button
-                    @click="selectedFlavour = 'chocolate'"
-                    :class="{ active: selectedFlavour === 'chocolate' }"
-                >
-                    🍫 Chocolate
-                </button>
+            </section>
 
-                <button
-                    @click="selectedFlavour = 'strawberry'"
-                    :class="{ active: selectedFlavour === 'strawberry' }"
-                >
-                    🍓 Strawberry
-                </button>
-
-            </div>
-
-
-            <h2>Choose your topping</h2>
-
-            <div class="options">
-
-                <button
-                    @click="selectedTopping = 'rainbow'"
-                    :class="{ active: selectedTopping === 'rainbow' }"
-                >
-                    🌈 Rainbow
-                </button>
-
-                <button
-                    @click="selectedTopping = 'chocolate'"
-                    :class="{ active: selectedTopping === 'chocolate' }"
-                >
-                    🍫 Chocolate
-                </button>
-
-                <button
-                    @click="selectedTopping = 'blue'"
-                    :class="{ active: selectedTopping === 'blue' }"
-                >
-                    💙 Blue
-                </button>
-
-            </div>
-        </section>
-
-      <section class="order-summary">
-
-          <h2>Your ice cream 🍦</h2>
-
-          <div class="summary-item">
-              <span>Flavour</span>
-              <strong>{{ flavourNames[selectedFlavour] }}</strong>
-          </div>
-
-          <div class="summary-item">
-              <span>Topping</span>
-              <strong>{{ toppingNames[selectedTopping] }}</strong>
-          </div>
-
-          <div class="summary-total">
-              <span>Total</span>
-              <strong>€{{ totalPrice.toFixed(2) }}</strong>
-          </div>
-      </section>
-
-      
-        <div v-if="orderSuccess" class="order-success">
-            🍦Order placed successfully!
         </div>
 
-        <form class="customer-form" @submit.prevent="createOrder">            <h2>Your details</h2>
+        <section class="order-summary">
+
+            <h2>Your ice cream 🍦</h2>
+
+            <div class="summary-item">
+                <span>Flavour</span>
+                <strong>{{ flavourNames[selectedFlavour] }}</strong>
+            </div>
+
+            <div class="summary-item">
+                <span>Topping</span>
+                <strong>{{ toppingNames[selectedTopping] }}</strong>
+            </div>
+
+            <div class="summary-total">
+                <span>Total</span>
+                <strong>€{{ totalPrice.toFixed(2) }}</strong>
+            </div>
+
+        </section>
+
+        <div
+            v-if="orderSuccess"
+            class="order-success"
+        >
+            🍦 Order placed successfully!
+        </div>
+
+        <form
+            class="customer-form"
+            @submit.prevent="createOrder"
+        >
+            <h2>Your details</h2>
 
             <label for="customer-name">
                 Name
@@ -246,6 +273,7 @@ watch(selectedTopping, (newTopping) => {
             >
                 Place order
             </button>
+
         </form>
     </main>
 </template>
