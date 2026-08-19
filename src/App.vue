@@ -41,6 +41,9 @@ const totalPrice = computed(() => {
 })
 
 async function createOrder() {
+     if (!customerName.value.trim() || !customerAddress.value.trim()) {
+        return
+    }
     orderSuccess.value = false
 
     const order = {
@@ -185,8 +188,7 @@ watch(selectedTopping, (newTopping) => {
             🍦Order placed successfully!
         </div>
 
-        <section class="customer-form">
-            <h2>Your details</h2>
+        <form class="customer-form" @submit.prevent="createOrder">            <h2>Your details</h2>
 
             <label for="customer-name">
                 Name
@@ -197,6 +199,7 @@ watch(selectedTopping, (newTopping) => {
                 v-model="customerName"
                 type="text"
                 placeholder="Your name"
+                required
             >
 
             <label for="customer-address">
@@ -208,13 +211,15 @@ watch(selectedTopping, (newTopping) => {
                 v-model="customerAddress"
                 type="text"
                 placeholder="Your address"
+                required
             >
 
-            <button class="place-order-button"
-              @click="createOrder"
+            <button
+                class="place-order-button"
+                type="submit"
             >
-              Place order
+                Place order
             </button>
-        </section>
+        </form>
     </main>
 </template>
