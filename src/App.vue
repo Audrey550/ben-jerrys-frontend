@@ -161,10 +161,6 @@ watch(selectedTopping, (newTopping) => {
               <span>Total</span>
               <strong>€{{ totalPrice.toFixed(2) }}</strong>
           </div>
-
-          <button class="order-button">
-              Order ice cream
-          </button>
       </section>
 
       <section class="customer-form">
