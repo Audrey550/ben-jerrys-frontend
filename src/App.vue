@@ -1,6 +1,8 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { createScene } from './three/scene'
+import Login from './Login.vue'
+import Admin from './Admin.vue'
 
 const selectedFlavour = ref('vanilla')
 const selectedTopping = ref('rainbow')
@@ -8,6 +10,8 @@ const selectedTopping = ref('rainbow')
 const customerName = ref('')
 const customerAddress = ref('')
 const orderSuccess = ref(false)
+const showLogin = ref(false)
+const isAdmin = ref(false)
 
 const flavourPrices = {
     vanilla: 3.50,
@@ -75,6 +79,11 @@ async function createOrder() {
     orderSuccess.value = true
 }
 
+function handleLogin() {
+    isAdmin.value = true
+    showLogin.value = false
+}
+
 let iceCreamScene = null
 
 onMounted(() => {
@@ -100,8 +109,20 @@ watch(selectedTopping, (newTopping) => {
 </script>
 
 <template>
-    <main>
+    <Login
+    v-if="showLogin && !isAdmin"
+    @login="handleLogin"
+    />
+
+    <Admin
+        v-else-if="isAdmin"
+    />
+
+    <main v-else>
         <h1>Ben & Jerry's Custom Ice Cream</h1>
+        <button @click="showLogin = true">
+            Admin
+        </button>
 
         <div id="three-container"></div>
 
