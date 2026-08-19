@@ -7,11 +7,24 @@ const selectedTopping = ref('rainbow')
 
 const customerName = ref('')
 const customerAddress = ref('')
+const orderSuccess = ref(false)
 
 const flavourPrices = {
     vanilla: 3.50,
     chocolate: 4.00,
     strawberry: 3.75
+}
+
+const flavourNames = {
+    vanilla: 'Vanilla',
+    chocolate: 'Chocolate',
+    strawberry: 'Strawberry'
+}
+
+const toppingNames = {
+    rainbow: 'Rainbow',
+    chocolate: 'Chocolate',
+    blue: 'Blue'
 }
 
 const toppingPrices = {
@@ -28,6 +41,8 @@ const totalPrice = computed(() => {
 })
 
 async function createOrder() {
+    orderSuccess.value = false
+
     const order = {
         customer: {
             name: customerName.value,
@@ -53,6 +68,8 @@ async function createOrder() {
     const data = await response.json()
 
     console.log('Order:', data)
+
+    orderSuccess.value = true
 }
 
 let iceCreamScene = null
@@ -149,12 +166,12 @@ watch(selectedTopping, (newTopping) => {
 
           <div class="summary-item">
               <span>Flavour</span>
-              <strong>{{ selectedFlavour }}</strong>
+              <strong>{{ flavourNames[selectedFlavour] }}</strong>
           </div>
 
           <div class="summary-item">
               <span>Topping</span>
-              <strong>{{ selectedTopping }}</strong>
+              <strong>{{ toppingNames[selectedTopping] }}</strong>
           </div>
 
           <div class="summary-total">
@@ -163,7 +180,12 @@ watch(selectedTopping, (newTopping) => {
           </div>
       </section>
 
-      <section class="customer-form">
+      
+        <div v-if="orderSuccess" class="order-success">
+            🍦Order placed successfully!
+        </div>
+
+        <section class="customer-form">
             <h2>Your details</h2>
 
             <label for="customer-name">
@@ -188,11 +210,11 @@ watch(selectedTopping, (newTopping) => {
                 placeholder="Your address"
             >
 
-          <button class="place-order-button"
+            <button class="place-order-button"
               @click="createOrder"
-          >
+            >
               Place order
-          </button>
-      </section>
+            </button>
+        </section>
     </main>
 </template>
