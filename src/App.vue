@@ -84,6 +84,10 @@ function handleLogin() {
     showLogin.value = false
 }
 
+function handleLogout() {
+    isAdmin.value = false
+}
+
 let iceCreamScene = null
 
 onMounted(() => {
@@ -110,12 +114,13 @@ watch(selectedTopping, (newTopping) => {
 
 <template>
     <Login
-    v-if="showLogin && !isAdmin"
-    @login="handleLogin"
+        v-if="showLogin && !isAdmin"
+        @login="handleLogin"
     />
 
     <Admin
         v-else-if="isAdmin"
+        @logout="handleLogout"
     />
 
     <main v-else>
