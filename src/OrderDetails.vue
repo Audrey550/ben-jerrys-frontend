@@ -14,7 +14,7 @@ const order = ref(null)
 
 async function fetchOrder() {
     const response = await fetch(
-        `http://localhost:3000/api/orders/${props.orderId}`
+        `${import.meta.env.VITE_API_URL}/api/orders/${props.orderId}`
     )
 
     if (!response.ok) {

@@ -8,7 +8,9 @@ const selectedOrderId = ref(null)
 const emit = defineEmits(['logout'])
 
 async function fetchOrders() {
-    const response = await fetch('http://localhost:3000/api/orders')
+    const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders`
+    )
 
     if (!response.ok) {
         console.error('Failed to fetch orders')
@@ -22,7 +24,7 @@ async function fetchOrders() {
 
 async function updateStatus(order, newStatus) {
     const response = await fetch(
-        `http://localhost:3000/api/orders/${order.id}`,
+        `${import.meta.env.VITE_API_URL}/api/orders/${order.id}`,
         {
             method: 'PATCH',
             headers: {
@@ -46,7 +48,7 @@ async function updateStatus(order, newStatus) {
 
 async function deleteOrder(order) {
     const response = await fetch(
-        `http://localhost:3000/api/orders/${order.id}`,
+        `${import.meta.env.VITE_API_URL}/api/orders/${order.id}`,
         {
             method: 'DELETE'
         }
